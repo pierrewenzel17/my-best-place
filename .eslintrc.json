@@ -30,6 +30,9 @@
 	],
 	"rules": {
 		"no-undef": "off",
+		"no-shadow": "off",
+		"react/jsx-props-no-spreading": "off",
+		"no-use-before-define": "off",
 		"@typescript-eslint/no-explicit-any": ["error"],
 		"@typescript-eslint/no-unused-vars": ["error"],
 		"@typescript-eslint/comma-spacing": ["error"],
@@ -42,13 +45,13 @@
 		"@typescript-eslint/array-type": ["error", { "default": "generic" }],
 		"@typescript-eslint/typedef": [ "error",
 			{
-				"arrayDestructuring": true,
+				"arrayDestructuring": false,
 				"arrowParameter": true,
 				"memberVariableDeclaration": true,
-				"objectDestructuring": true,
+				"objectDestructuring": false,
 				"parameter": true,
 				"propertyDeclaration": true,
-				"variableDeclaration": true,
+				"variableDeclaration": false,
 				"variableDeclarationIgnoreFunction": true
 			}
 		],
