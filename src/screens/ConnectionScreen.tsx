@@ -1,57 +1,118 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	StyleSheet,
-	TextInput,
-	Text,
-	TouchableOpacity,
 	View,
+	TouchableWithoutFeedback,
 } from 'react-native';
-import { auth } from '../../firebase';
+import {
+	getAuth,
+	createUserWithEmailAndPassword,
+	UserCredential,
+	signInWithEmailAndPassword,
+	User,
+} from 'firebase/auth';
+import { FirebaseError } from '@firebase/util';
+import { Button, Icon, Input, Text } from '@ui-kitten/components';
 
-function ConnectionScreen(): JSX.Element {
+type Props = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	navigation: any;
+};
+
+function ConnectionScreen({ navigation }: Props): JSX.Element {
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
+	const toggleSecureEntry = (): void => {
+		setSecureTextEntry(!secureTextEntry);
+	};
+
+	const renderInputIcon = (props: any): JSX.Element => (
+		<TouchableWithoutFeedback onPress={toggleSecureEntry}>
+			<Icon {...props} name={!secureTextEntry ? 'eye' : 'eye-off'} />
+		</TouchableWithoutFeedback>
+	);
+
+	useEffect(() => {
+		getAuth().onAuthStateChanged((user: User | null): void => {
+			if (user) {
+				navigation.navigate('Home');
+			}
+		});
+	}, []);
 
 	function handleSignUp(): void {
-		auth()
-			.createUserWithEmailEmailAndPassword(email, password)
-			.then((userCredentials) => {
-				const { user } = userCredentials;
-				console.info(user.email);
+		const auth = getAuth();
+		createUserWithEmailAndPassword(auth, email, password)
+			.then((userCredential: UserCredential) => {
+				// Signed in
+				const { user } = userCredential;
+				console.log(user.email);
 			})
-			.catch((error: Error): void => console.error(error.message));
+			.catch((error: FirebaseError) => {
+				console.log(error.message);
+			});
+	}
+
+	function handleSignIn(): void {
+		const auth = getAuth();
+		signInWithEmailAndPassword(auth, email, password)
+			.then((userCredential: UserCredential) => {
+				// Signed in
+				const { user } = userCredential;
+				console.log(user.email);
+				// ...
+			})
+			.catch((error: FirebaseError) => {
+				console.log(error.message);
+			});
 	}
 
 	return (
 		<KeyboardAvoidingView style={styles.container} behavior='padding'>
-			<Text>My Best Place</Text>
+			<Text style={styles.text} category='h2' status='primary'>
+				My Best Place
+			</Text>
 			<View style={styles.inputContainer}>
-				<TextInput
+				<Input
 					placeholder='Email'
 					value={email}
 					onChangeText={(text: string): void => setEmail(text)}
 					style={styles.input}
+					size='large'
 				/>
-				<TextInput
+				<Input
+					size='large'
+					style={styles.input}
 					placeholder='Mot de passe'
 					value={password}
+					secureTextEntry={secureTextEntry}
 					onChangeText={(text: string): void => setPassword(text)}
-					style={styles.input}
-					secureTextEntry
+					accessoryRight={renderInputIcon}
 				/>
 			</View>
 			<View style={styles.buttonContainer}>
-				<TouchableOpacity onPress={(): void => {}} style={styles.button}>
-					<Text style={styles.buttonText}>Connexion</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
+				<Button
+					style={styles.button}
+					onPress={(): void => {
+						handleSignIn();
+					}}
+					appearance='filled'
+					size='large'>
+					Connexion
+				</Button>
+				<Button
+					style={styles.button}
 					onPress={(): void => {
 						handleSignUp();
 					}}
-					style={[styles.button, styles.buttonOutline]}>
-					<Text style={styles.buttonOutlineText}>Crée un compte</Text>
-				</TouchableOpacity>
+					appearance='outline'
+					size='large'>
+					Crée un compte
+				</Button>
 			</View>
 		</KeyboardAvoidingView>
 	);
@@ -67,11 +128,8 @@ const styles = StyleSheet.create({
 		width: '80%',
 	},
 	input: {
-		backgroundColor: 'white',
-		paddingHorizontal: 15,
-		paddingVertical: 10,
 		borderRadius: 10,
-		marginTop: 5,
+		marginBottom: 5,
 	},
 	buttonContainer: {
 		width: '60%',
@@ -80,27 +138,12 @@ const styles = StyleSheet.create({
 		marginTop: 40,
 	},
 	button: {
-		backgroundColor: 'blue',
 		width: '100%',
-		padding: 15,
 		borderRadius: 10,
-		alignItems: 'center',
+		marginBottom: 5,
 	},
-	buttonOutline: {
-		backgroundColor: 'white',
-		marginTop: 5,
-		borderColor: 'blue',
-		borderWidth: 2,
-	},
-	buttonText: {
-		color: 'white',
-		fontWeight: '700',
-		fontSize: 16,
-	},
-	buttonOutlineText: {
-		color: 'blue',
-		fontWeight: '700',
-		fontSize: 16,
+	text: {
+		marginBottom: 100,
 	},
 });
 
