@@ -1,32 +1,22 @@
-import { getAuth } from 'firebase/auth';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import SearchList from '../components/SearchList';
 
-type Props = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	navigation: any;
-};
-
-function HomeScreen({ navigation }: Props): JSX.Element {
-	function handleSignOut(): void {
-		getAuth()
-			.signOut()
-			.then(() => {
-				navigation.replace('Login');
-			});
-	}
-
+function HomeScreen(): JSX.Element {
+	const [mapRegion, setmapRegion] = useState({
+		latitude: 49.897443,
+		longitude: 2.290084,
+		latitudeDelta: 0.2,
+		longitudeDelta: 0.05,
+	});
 	return (
 		<View style={styles.container}>
-			<Text>Email : {getAuth().currentUser?.email}</Text>
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity
-					style={styles.button}
-					onPress={(): void => {
-						handleSignOut();
-					}}>
-					<Text style={styles.buttonText}>Sign Out</Text>
-				</TouchableOpacity>
+			<MapView style={styles.map} provider={MapView.PROVIDER_GOOGLE} region={mapRegion}>
+				<Marker coordinate={mapRegion} title='Marker' />
+			</MapView>
+			<View style={styles.places}>
+				<SearchList />
 			</View>
 		</View>
 	);
@@ -35,28 +25,15 @@ function HomeScreen({ navigation }: Props): JSX.Element {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
+		backgroundColor: 'white',
 	},
-	buttonContainer: {
-		width: '60%',
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 40,
+	map: {
+		flex: 3,
+		alignSelf: 'stretch',
+		height: '100%',
 	},
-	button: {
-		backgroundColor: 'blue',
-		width: '100%',
-		padding: 15,
-		borderRadius: 10,
-		alignItems: 'center',
-		borderColor: 'blue',
-		borderWidth: 2,
-	},
-	buttonText: {
-		color: 'white',
-		fontWeight: '700',
-		fontSize: 16,
+	places: {
+		flex: 2,
 	},
 });
 

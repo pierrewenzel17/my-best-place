@@ -5,8 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp } from 'firebase/app';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-import HomeScreen from './src/screens/HomeScreen';
 import ConnectionScreen from './src/screens/ConnectionScreen';
+import Tabs from './src/components/navigation/Tabs';
 
 // eslint-disable-next-line @typescript-eslint/typedef
 const Stack = createNativeStackNavigator();
@@ -35,7 +35,11 @@ export default function App(): JSX.Element {
 							name='Login'
 							component={ConnectionScreen}
 						/>
-						<Stack.Screen name='Home' component={HomeScreen} />
+						<Stack.Screen
+							name='Tabs'
+							component={Tabs}
+							options={{ headerShown: false }}
+						/>
 					</Stack.Navigator>
 				</NavigationContainer>
 			</ApplicationProvider>
