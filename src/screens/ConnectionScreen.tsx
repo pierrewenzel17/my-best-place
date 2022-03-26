@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import {
@@ -39,7 +40,7 @@ function ConnectionScreen({ navigation }: Props): JSX.Element {
 	useEffect(() => {
 		getAuth().onAuthStateChanged((user: User | null): void => {
 			if (user) {
-				navigation.navigate('Home');
+				navigation.navigate('Tabs');
 			}
 		});
 	}, []);
