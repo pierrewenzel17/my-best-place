@@ -26,21 +26,12 @@ function FavList({ navigation }: any): JSX.Element {
 		</Button>
 	);
 
-<<<<<<< HEAD
 	const renderItem = ({ item, index }: Element): JSX.Element => (
 		<ListItem
 			onPress={(): void => goToNextScreen(item.fav.place)}
 			title={`${index} ${item.fav.place.name}`}
 			description={`${item.fav.place.description.substring(0, 100)}`}
 			accessoryRight={(): JSX.Element => renderItemAccessory(item)}
-=======
-    const renderItem = ({ item }: Element): JSX.Element => (
-		<ListItem
-			onPress={() => goToNextScreen(item)}
-			title={`${item.name}`}
-			description={`${item.description.substring(0, 100)}`}
-			accessoryRight={renderItemAccessory}
->>>>>>> dbfa5f7 (suite map)
 		/>
 	);
 

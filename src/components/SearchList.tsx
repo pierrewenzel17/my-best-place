@@ -10,12 +10,7 @@ type Element = {
 	index: number;
 };
 
-<<<<<<< HEAD
-function SearchList({ navigation }: any): JSX.Element {
-	const [locations, setLocations] = useState<Array<Place>>([]);
-=======
 function SearchList({navigation, locations} : any): JSX.Element {
->>>>>>> dbfa5f7 (suite map)
 
 	async function addFav(item: Place): Promise<void> {
 		await favService.create(item);
