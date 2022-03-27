@@ -10,8 +10,12 @@ type Element = {
 	index: number;
 };
 
+<<<<<<< HEAD
 function SearchList({ navigation }: any): JSX.Element {
 	const [locations, setLocations] = useState<Array<Place>>([]);
+=======
+function SearchList({navigation, locations} : any): JSX.Element {
+>>>>>>> dbfa5f7 (suite map)
 
 	async function addFav(item: Place): Promise<void> {
 		await favService.create(item);
@@ -23,10 +27,10 @@ function SearchList({ navigation }: any): JSX.Element {
 		</Button>
 	);
 
-	const renderItem = ({ item, index }: Element): JSX.Element => (
+	const renderItem = ({ item }: Element): JSX.Element => (
 		<ListItem
 			onPress={() => goToNextScreen(item)}
-			title={`${index} ${item.name}`}
+			title={`${item.name}`}
 			description={`${item.description.substring(0, 100)}`}
 			accessoryRight={() => renderItemAccessory(item)}
 		/>
@@ -38,11 +42,8 @@ function SearchList({ navigation }: any): JSX.Element {
 		});
 	};
 
-	useEffect(() => {
-		PlaceService.getLocations().then((locations: Array<Place>) => {
-			setLocations(locations);
-		});
-	}, []);
+	useEffect(() => {}, []);
+
 
 	return <List style={styles.container} data={locations} renderItem={renderItem} />;
 }

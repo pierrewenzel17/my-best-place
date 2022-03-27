@@ -13,6 +13,7 @@ function DetailsScreen({ route }: any): JSX.Element {
 		longitudeDelta: 0.05,
 	});
 
+<<<<<<< HEAD
 	function renderCategories() {
 		return item.categories.map((item, index) => (
 			<DataTable.Row key={index}>
@@ -21,6 +22,16 @@ function DetailsScreen({ route }: any): JSX.Element {
 		));
 	}
 
+=======
+    function renderCategories() {
+        return item.categories.map((item, index) => (
+            <DataTable.Row key={index}>
+                <DataTable.Cell key={index}>{item}</DataTable.Cell>
+            </DataTable.Row>
+        ));
+    }
+    
+>>>>>>> dbfa5f7 (suite map)
 	return (
 		<View style={styles.container}>
 			<MapView style={styles.map} provider={MapView.PROVIDER_GOOGLE} region={mapRegion}>
