@@ -7,17 +7,18 @@ import { initializeApp } from 'firebase/app';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import ConnectionScreen from './src/screens/ConnectionScreen';
 import Tabs from './src/components/navigation/Tabs';
+import DetailsScreen from './src/screens/DetailsScreen';
 
 // eslint-disable-next-line @typescript-eslint/typedef
 const Stack = createNativeStackNavigator();
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyC1bI05_zMeudEqBsGszIiB3p9l0jplrtA',
-	authDomain: 'my-best-place-206b5.firebaseapp.com',
-	projectId: 'my-best-place-206b5',
-	storageBucket: 'my-best-place-206b5.appspot.com',
-	messagingSenderId: '705503791195',
-	appId: '1:705503791195:web:201d2596efb1c83878177e',
+	apiKey: "AIzaSyDws0GdA-TS1UaH3SV-t9ZElSP08YP7Rdg",
+	authDomain: "my-best-place-2.firebaseapp.com",
+	projectId: "my-best-place-2",
+	storageBucket: "my-best-place-2.appspot.com",
+	messagingSenderId: "719862810779",
+	appId: "1:719862810779:web:20220bac85fe3effb79e3e"
 };
 
 export default function App(): JSX.Element {
@@ -39,6 +40,10 @@ export default function App(): JSX.Element {
 							name='Tabs'
 							component={Tabs}
 							options={{ headerShown: false }}
+						/>
+						<Stack.Screen
+							name='Details'
+							component={DetailsScreen}
 						/>
 					</Stack.Navigator>
 				</NavigationContainer>

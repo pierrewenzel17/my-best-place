@@ -112,7 +112,7 @@ function ConnectionScreen({ navigation }: Props): JSX.Element {
 					}}
 					appearance='outline'
 					size='large'>
-					Crée un compte
+					Créer un compte
 				</Button>
 			</View>
 		</KeyboardAvoidingView>
