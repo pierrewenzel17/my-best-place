@@ -33,11 +33,10 @@ function HomeScreen({navigation} : any): JSX.Element {
 	}
 
 	useEffect(() => {
-		(async () => {
-			await PlaceService.getLocations().then((locations: Array<Place>) => {
-				setLocations(locations);
-			});
-		})();
+		PlaceService.getLocations().then((locations: Array<Place>) => {
+			setLocations(locations);
+			console.log("getLocations/homeScreen")
+		});
 
 		(async () => {
 			await Location.requestForegroundPermissionsAsync();
@@ -49,7 +48,7 @@ function HomeScreen({navigation} : any): JSX.Element {
 					longitudeDelta: 0.001,
 				})
 		})();
-	}, [navigation]);
+	}, [])
 
 	return (
 		<View style={styles.container}>

@@ -19,13 +19,14 @@ function SearchScreen({navigation} : any): JSX.Element {
 
 	const [locations, setLocations] = useState<Array<Place>>([]);
 
+	
+
 	useEffect(() => {
-		(async () => {
-			await PlaceService.getLocations().then((locations: Array<Place>) => {
-				setLocations(locations);
-			});
-		})();
-	})
+		PlaceService.getLocations().then((locations: Array<Place>) => {
+			setLocations(locations);
+			console.log("getLocations/searchScreen")
+		});
+	},[])
 
 	async function onSubmit(): Promise<void> {
 		groupDisplayValues.map((value: string) => {

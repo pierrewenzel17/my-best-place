@@ -17,6 +17,7 @@ async function getLocations(): Promise<Array<Place>> {
 	const locationList = locationsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
 		doc.data()
 	);
+	console.log("getLocations");
 	return locationList as Array<Place>;
 }
 
@@ -24,12 +25,14 @@ async function getById(id: string): Promise<Place> {
 	const locationsCol = doc(db, `${collections.places}/${id}`);
 	const locationsSnapshot = await getDoc(locationsCol);
 	const res = locationsSnapshot.data();
+	console.log("getById");
 	return res as Place;
 }
 
 async function create(location: Place): Promise<void> {
 	try {
 		const locationsCol = collection(db, collections.places);
+		console.log("create");
 		await addDoc(locationsCol, location);
 	} catch (error) {
 		console.error('Error adding document: ', error);

@@ -25,6 +25,7 @@ async function getFavs(): Promise<Array<FavoriRead>> {
 	const locationList = querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
 		return { id: doc.id, fav: doc.data() as Favori } as FavoriRead;
 	});
+	console.log("getFavs");
 	return locationList;
 }
 
