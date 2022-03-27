@@ -24,12 +24,8 @@ async function getLocations(): Promise<Array<Place>> {
 	return locationList as Array<Place>;
 }
 
-async function recherche(name: string, categ: Array<Category>): Promise<Array<Place>> {
-	const q = query(
-		collection(db, collections.favorites),
-		where('user', '==', name),
-		where('categories', 'in', categ)
-	);
+async function recherche(name: string, categ: Array<string>): Promise<Array<Place>> {
+	const q = query(collection(db, collections.places), where('categories', 'in', [categ]));
 	const locationsSnapshot = await getDocs(q);
 	const locationList = locationsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
 		doc.data()

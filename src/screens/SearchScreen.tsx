@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
+	Button,
 	IndexPath,
 	Input,
 	Select,
@@ -13,7 +14,10 @@ import Place from '../models/Place';
 
 function SearchScreen({ navigation }: any): JSX.Element {
 	const [name, setName] = useState<string>('');
-	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([]);
+	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([
+		new IndexPath(0),
+		new IndexPath(1),
+	]);
 	const [locations, setLocations] = useState<Array<Place>>([]);
 
 	
@@ -30,7 +34,8 @@ function SearchScreen({ navigation }: any): JSX.Element {
 			return value as unknown as Category;
 		}) as Array<Category>;
 
-		PlaceService.recherche(name, c);
+		const res = await PlaceService.recherche(name, groupDisplayValues);
+		setLocations(res as Array<Place>);
 	}
 
 	const groupDisplayValues: Array<string> = selectedIndex.map((index: IndexPath) => {
@@ -60,6 +65,9 @@ function SearchScreen({ navigation }: any): JSX.Element {
 					onSelect={(index: IndexPath | Array<IndexPath>): void => setSelectedIndex(index)}>
 					{Object.keys(Category).map(renderOption)}
 				</Select>
+				<Button style={styles.space20} status='primary' onPress={(): Promise<void> => onSubmit()}>
+				Créer
+				</Button>
 			</View>
 			<SearchList navigation={navigation} locations={locations} />
 		</View>
@@ -74,12 +82,20 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: 'white',
 	},
 	space10: {
 		marginTop: 5,
+		width: '100%',
 	},
 	researchContainer: {
 		width: '100%',
+		alignItems: 'center',
+	},
+	space20: {
+		width: '80%',
+		marginTop: 20,
+		marginBottom: 20,
 	},
 	title: {
 		fontWeight: 'bold',
