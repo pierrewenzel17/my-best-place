@@ -12,7 +12,7 @@ import collections from '../data/tables';
 import Place from '../models/Place';
 
 async function getLocations(): Promise<Array<Place>> {
-	const locationsCol = collection(db, 'places');
+	const locationsCol = collection(db, collections.places);
 	const locationsSnapshot = await getDocs(locationsCol);
 	const locationList = locationsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
 		doc.data()

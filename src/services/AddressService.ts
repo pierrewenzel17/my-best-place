@@ -15,7 +15,7 @@ async function GetLatLong(adress: string): Promise<Array<LatLong>> {
 	).then((res) => res.json());
 	let data: Array<LatLong> = [];
 	if (res.features !== undefined) {
-		data = res.features.map((value : any) => {
+		data = res.features.map((value: any) => {
 			return {
 				Label: value.properties.label,
 				Latiture: value.geometry.coordinates[1],

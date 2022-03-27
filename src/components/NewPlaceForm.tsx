@@ -6,8 +6,10 @@ import {
 	Button,
 	IndexPath,
 	Input,
+	Modal,
 	Select,
 	SelectItem,
+	Card,
 } from '@ui-kitten/components';
 import { GeoPoint } from 'firebase/firestore';
 import Place from '../models/Place';
@@ -20,6 +22,7 @@ function NewPlaceForm(): JSX.Element {
 	const [description, setDescription] = useState<string>('');
 	const [adresse, setAdresse] = useState<string>('');
 	const [data, setData] = React.useState<Array<LatLong>>([]);
+	const [visible, setVisible] = React.useState<boolean>(false);
 
 	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([]);
 
@@ -31,7 +34,12 @@ function NewPlaceForm(): JSX.Element {
 		const place: Place = { name, description, categories, position, adresse };
 		PlaceService.create(place);
 
-		setName(''); setDescription(''); setAdresse(''); setData([]); setSelectedIndex([]);
+		setName('');
+		setDescription('');
+		setAdresse('');
+		setData([]);
+		setSelectedIndex([]);
+		setVisible(true)
 	}
 
 	const groupDisplayValues: Array<string> = selectedIndex.map((index: IndexPath) => {
@@ -53,9 +61,7 @@ function NewPlaceForm(): JSX.Element {
 
 	//const renderOption = (title: string): JSX.Element => <SelectItem title={title} />;
 
-	const renderOption = (title: string): JSX.Element => (
-		<SelectItem key="{title}" title={title} />
-	);
+	const renderOption = (title: string): JSX.Element => <SelectItem key='{title}' title={title} />;
 
 	return (
 		<View style={styles.container}>
@@ -98,6 +104,15 @@ function NewPlaceForm(): JSX.Element {
 			<Button style={styles.space20} status='primary' onPress={(): Promise<void> => onSubmit()}>
 				Créer
 			</Button>
+
+			<Modal
+        visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}>
+        <Card disabled={true}>
+          <Text>La place est crée 😻</Text>
+        </Card>
+      </Modal>
 		</View>
 	);
 }
@@ -106,18 +121,21 @@ export default NewPlaceForm;
 
 const styles = StyleSheet.create({
 	container: {
-		width: '80%'
+		width: '80%',
 	},
 	title: {
 		fontWeight: 'bold',
 		fontSize: 36,
 		textAlign: 'center',
-		marginBottom: 50
+		marginBottom: 50,
 	},
 	space10: {
-		marginTop: 10
+		marginTop: 10,
 	},
 	space20: {
-		marginTop: 20
-	}
+		marginTop: 20,
+	},
+	backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
 });

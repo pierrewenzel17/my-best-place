@@ -1,12 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	StyleSheet,
-	View,
-	TouchableWithoutFeedback,
-} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
