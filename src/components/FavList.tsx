@@ -9,12 +9,13 @@ type Element = {
 	index: number;
 };
 
-function SearchList({navigation} : any): JSX.Element {
-	const [locations, setLocations] = useState<Array<Place>>([]);
+function FavList({navigation} : any): JSX.Element {
 
-	const renderItemAccessory = (): JSX.Element => <Button size='tiny'>FAVORI</Button>;
+    const [fav, setFav] = useState<Array<Place>>([]);
 
-	const renderItem = ({ item, index }: Element): JSX.Element => (
+    const renderItemAccessory = (): JSX.Element => <Button size='tiny'>SUPPRIMER</Button>;
+
+    const renderItem = ({ item, index }: Element): JSX.Element => (
 		<ListItem
 			onPress={() => goToNextScreen(item)}
 			title={`${index} ${item.name}`}
@@ -30,15 +31,16 @@ function SearchList({navigation} : any): JSX.Element {
 	}
 
 	useEffect(() => {
-		PlaceService.getLocations().then((locations: Array<Place>) => {
-			setLocations(locations);
+		PlaceService.getLocations().then((fav: Array<Place>) => {
+			setFav(fav);
 		});
 	}, []);
 
-	return <List style={styles.container} data={locations} renderItem={renderItem} />;
+    return <List style={styles.container} data={fav} renderItem={renderItem} />;
+
 }
 
-export default SearchList;
+export default FavList;
 
 const styles = StyleSheet.create({
 	container: {

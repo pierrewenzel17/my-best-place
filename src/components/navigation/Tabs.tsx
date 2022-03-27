@@ -25,6 +25,7 @@ function Tabs(): JSX.Element {
 				name='Home'
 				component={HomeScreen}
 				options={{
+					unmountOnBlur: true,
 					tabBarIcon: (): JSX.Element => {
 						return (
 							<View style={styles.iconsBox}>
@@ -42,6 +43,7 @@ function Tabs(): JSX.Element {
 				name='search'
 				component={SearchScreen}
 				options={{
+					unmountOnBlur: true,
 					tabBarIcon: (): JSX.Element => {
 						return (
 							<View style={styles.iconsBox}>
@@ -59,6 +61,7 @@ function Tabs(): JSX.Element {
 				name='add'
 				component={AddScreen}
 				options={{
+					unmountOnBlur: true,
 					tabBarIcon: (): JSX.Element => {
 						return (
 							<View style={styles.iconsBox}>
@@ -76,6 +79,7 @@ function Tabs(): JSX.Element {
 				name='favoris'
 				component={FavScreen}
 				options={{
+					unmountOnBlur: true,
 					tabBarIcon: (): JSX.Element => {
 						return (
 							<View style={styles.iconsBox}>

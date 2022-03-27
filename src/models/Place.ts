@@ -6,5 +6,6 @@ interface Place {
 	description: string;
 	categories: Array<Category>;
 	position: GeoPoint;
+	adresse: string;
 }
 export default Place;

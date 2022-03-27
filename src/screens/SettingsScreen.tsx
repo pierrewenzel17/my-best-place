@@ -18,14 +18,17 @@ function SettingsScreen({ navigation }: Props): JSX.Element {
 
 	return (
 		<View style={styles.container}>
-			<Text>Email : {getAuth().currentUser?.email}</Text>
+			<View style={styles.textContainer}>
+				<Text style={styles.textBold}>Utilisateur actuel</Text>
+				<Text style={styles.text}>{getAuth().currentUser?.email}</Text>
+			</View>	
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
 					style={styles.button}
 					onPress={(): void => {
 						handleSignOut();
 					}}>
-					<Text style={styles.buttonText}>Sign Out</Text>
+					<Text style={styles.buttonText}>Se déconnecter</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -37,14 +40,15 @@ export default SettingsScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	buttonContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
 		width: '60%',
-		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 40,
+		marginBottom: 40
 	},
 	button: {
 		backgroundColor: 'blue',
@@ -60,4 +64,20 @@ const styles = StyleSheet.create({
 		fontWeight: '700',
 		fontSize: 16,
 	},
+	textContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
+		alignContent: 'center',
+		marginTop: 20
+	},
+	textBold: {
+		fontWeight: 'bold',
+		fontSize: 30,
+		textAlign: 'center'
+	},
+	text: {
+		fontSize: 15,
+		textAlign: 'center',
+		marginTop: 20
+	}
 });
