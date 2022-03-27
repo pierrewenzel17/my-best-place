@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchList from '../components/SearchList';
 import { Autocomplete, AutocompleteItem, IndexPath, Input, Select, SelectItem } from '@ui-kitten/components/ui';
 import AddressService, { LatLong } from '../services/AddressService';
@@ -17,8 +17,18 @@ function SearchScreen({navigation} : any): JSX.Element {
 
 	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([]);
 
+	const [locations, setLocations] = useState<Array<Place>>([]);
+
+	useEffect(() => {
+		(async () => {
+			await PlaceService.getLocations().then((locations: Array<Place>) => {
+				setLocations(locations);
+			});
+		})();
+	})
+
 	async function onSubmit(): Promise<void> {
-		const categories: Array<Category> = groupDisplayValues.map((value: string) => {
+		groupDisplayValues.map((value: string) => {
 			return value as unknown as Category;
 		}) as Array<Category>;
 
@@ -76,7 +86,7 @@ function SearchScreen({navigation} : any): JSX.Element {
 					{data.map(renderAuto)}
 				</Autocomplete>
 			</View>
-			<SearchList navigation={navigation}/>
+			<SearchList navigation={navigation} locations={locations}/>
 		</View>
 	);
 }
