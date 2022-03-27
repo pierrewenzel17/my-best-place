@@ -1,22 +1,23 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import {
+	Button,
+	IndexPath,
+	Input,
+	Select,
+	SelectItem,
+} from '@ui-kitten/components/ui';
 import SearchList from '../components/SearchList';
-import { Autocomplete, AutocompleteItem, IndexPath, Input, Select, SelectItem } from '@ui-kitten/components/ui';
-import AddressService, { LatLong } from '../services/AddressService';
 import PlaceService from '../services/PlaceService';
-import { GeoPoint } from 'firebase/firestore';
 import Category from '../models/Category';
 import Place from '../models/Place';
-import { SearchBar } from 'react-native-elements';
 
-function SearchScreen({navigation} : any): JSX.Element {
+function SearchScreen({ navigation }: any): JSX.Element {
 	const [name, setName] = useState<string>('');
-	const [description, setDescription] = useState<string>('');
-	const [adress, setAdress] = useState<string>('');
-	const [data, setData] = React.useState<Array<LatLong>>([]);
-
-	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([]);
-
+	const [selectedIndex, setSelectedIndex] = useState<IndexPath | Array<IndexPath>>([
+		new IndexPath(0),
+		new IndexPath(1),
+	]);
 	const [locations, setLocations] = useState<Array<Place>>([]);
 
 	
@@ -29,36 +30,23 @@ function SearchScreen({navigation} : any): JSX.Element {
 	},[])
 
 	async function onSubmit(): Promise<void> {
-		groupDisplayValues.map((value: string) => {
+		const c = groupDisplayValues.map((value: string) => {
 			return value as unknown as Category;
 		}) as Array<Category>;
 
-		setName(''); setDescription(''); setAdress(''); setData([]); setSelectedIndex([]);
+		const res = await PlaceService.recherche(name, groupDisplayValues);
+		setLocations(res as Array<Place>);
 	}
 
 	const groupDisplayValues: Array<string> = selectedIndex.map((index: IndexPath) => {
 		return Object.keys(Category)[index.row];
 	});
 
-	async function onChangeText(query: string): Promise<void> {
-		setAdress(query);
-		setData(await AddressService.GetLatLong(query));
-	}
+	const renderOption = (title: string): JSX.Element => <SelectItem key='{title}' title={title} />;
 
-	const renderAuto = (item, index): JSX.Element => (
-		<AutocompleteItem key={index} title={item.Label} />
-	);
-
-	const onSelect = (index: number): void => {
-		setAdress(data[index].Label);
-	};
-
-	const renderOption = (title: string): JSX.Element => (
-		<SelectItem key="{title}" title={title} />
-	);
-	
 	return (
 		<View style={styles.container}>
+			<Text style={styles.title}>Recherche</Text>
 			<View style={styles.researchContainer}>
 				<Input
 					style={styles.space10}
@@ -77,17 +65,11 @@ function SearchScreen({navigation} : any): JSX.Element {
 					onSelect={(index: IndexPath | Array<IndexPath>): void => setSelectedIndex(index)}>
 					{Object.keys(Category).map(renderOption)}
 				</Select>
-				<Autocomplete
-					style={styles.space10}
-					placeholder='Adresse'
-					size='large'
-					value={adress}
-					onSelect={onSelect}
-					onChangeText={(value: string): Promise<void> => onChangeText(value)}>
-					{data.map(renderAuto)}
-				</Autocomplete>
+				<Button style={styles.space20} status='primary' onPress={(): Promise<void> => onSubmit()}>
+				Créer
+				</Button>
 			</View>
-			<SearchList navigation={navigation} locations={locations}/>
+			<SearchList navigation={navigation} locations={locations} />
 		</View>
 	);
 }
@@ -100,11 +82,26 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: 'white',
 	},
 	space10: {
-		marginTop: 5
+		marginTop: 5,
+		width: '100%',
 	},
 	researchContainer: {
-		width: '100%'
-	}
+		width: '100%',
+		alignItems: 'center',
+	},
+	space20: {
+		width: '80%',
+		marginTop: 20,
+		marginBottom: 20,
+	},
+	title: {
+		fontWeight: 'bold',
+		fontSize: 36,
+		textAlign: 'center',
+		marginBottom: 50,
+		marginTop: 50,
+	},
 });

@@ -5,10 +5,13 @@ import {
 	DocumentData,
 	getDoc,
 	getDocs,
+	query,
 	QueryDocumentSnapshot,
+	where,
 } from 'firebase/firestore';
 import { db } from '../data/firebase.config';
 import collections from '../data/tables';
+import Category from '../models/Category';
 import Place from '../models/Place';
 
 async function getLocations(): Promise<Array<Place>> {
@@ -18,6 +21,15 @@ async function getLocations(): Promise<Array<Place>> {
 		doc.data()
 	);
 	console.log("getLocations");
+	return locationList as Array<Place>;
+}
+
+async function recherche(name: string, categ: Array<string>): Promise<Array<Place>> {
+	const q = query(collection(db, collections.places), where('categories', 'in', [categ]));
+	const locationsSnapshot = await getDocs(q);
+	const locationList = locationsSnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
+		doc.data()
+	);
 	return locationList as Array<Place>;
 }
 
@@ -42,6 +54,7 @@ async function create(location: Place): Promise<void> {
 const locationService = {
 	getLocations,
 	getById,
+	recherche,
 	create,
 };
 
